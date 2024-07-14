@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>アラームアプリ</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #time {
+            font-size: 48px;
+            margin-top: 20px;
+        }
+        .time-set {
+            margin: 10px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .control-button {
+            font-size: 24px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        #time1 {
+            color: orange;
+        }
+        #time2 {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="time">00:00</div>
+    <div class="time-set">
+        <input type="number" id="hour1" placeholder="時">
+        <input type="number" id="minute1" placeholder="分">
+        <span class="control-button" id="gear1">⚙️</span>
+        <input type="file" id="audio1" class="hidden" accept="audio/*">
+        <span class="control-button" id="playAudio1">▶️</span>
+    </div>
+    <div class="time-set">
+        <input type="number" id="hour2" placeholder="時">
+        <input type="number" id="minute2" placeholder="分">
+        <span class="control-button" id="gear2">⚙️</span>
+        <input type="file" id="audio2" class="hidden" accept="audio/*">
+        <span class="control-button" id="playAudio2">▶️</span>
+    </div>
+    <div>
+        <span class="control-button" id="start">▶️</span>
+        <span class="control-button" id="pause">⏸️</span>
+        <span class="control-button" id="restart">🔄</span>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
