@@ -25,20 +25,32 @@ gear2.addEventListener('click', () => audio2Input.click());
 audio1Input.addEventListener('change', () => {
     if (audio1Input.files.length > 0) {
         audio1 = new Audio(URL.createObjectURL(audio1Input.files[0]));
-        playAudio1Button.addEventListener('click', () => {
-            audio1.play().catch(error => console.error("Audio play error: ", error));
-        });
+        playAudio1Button.addEventListener('click', playAudio1);
     }
 });
 
 audio2Input.addEventListener('change', () => {
     if (audio2Input.files.length > 0) {
         audio2 = new Audio(URL.createObjectURL(audio2Input.files[0]));
-        playAudio2Button.addEventListener('click', () => {
-            audio2.play().catch(error => console.error("Audio play error: ", error));
-        });
+        playAudio2Button.addEventListener('click', playAudio2);
     }
 });
+
+function playAudio1() {
+    if (audio1) {
+        audio1.pause();
+        audio1.currentTime = 0;
+        audio1.play().catch(error => console.error("Audio play error: ", error));
+    }
+}
+
+function playAudio2() {
+    if (audio2) {
+        audio2.pause();
+        audio2.currentTime = 0;
+        audio2.play().catch(error => console.error("Audio play error: ", error));
+    }
+}
 
 startButton.addEventListener('click', startTimer);
 pauseButton.addEventListener('click', pauseTimer);
@@ -86,6 +98,8 @@ function countdown() {
     console.log("Current Timer: ", currentTimer);
     if (currentTimer <= 1) {
         if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
             currentAudio.play().catch(error => console.error("Audio play error: ", error));
         }
         switchInterval();
@@ -108,10 +122,16 @@ function switchInterval() {
             timeDisplay.style.color = 'orange';
         }
     } else {
-        currentInterval = 1;
-        currentTimer = time1;
-        currentAudio = audio1;
-        timeDisplay.style.color = 'orange';
+        if(time1 > 0){
+            currentInterval = 1;
+            currentTimer = time1;
+            currentAudio = audio1;
+            timeDisplay.style.color = 'orange';
+        }else{
+            currentTimer = time2;
+            currentAudio = audio2;
+            timeDisplay.style.color = 'green';
+        }
     }
     displayTime(currentTimer);
 }
