@@ -17,23 +17,25 @@ const audio2Input = document.getElementById('audio2');
 const playAudio1Button = document.getElementById('playAudio1');
 const playAudio2Button = document.getElementById('playAudio2');
 
+let audio1, audio2;
+
 gear1.addEventListener('click', () => audio1Input.click());
 gear2.addEventListener('click', () => audio2Input.click());
 
 audio1Input.addEventListener('change', () => {
     if (audio1Input.files.length > 0) {
+        audio1 = new Audio(URL.createObjectURL(audio1Input.files[0]));
         playAudio1Button.addEventListener('click', () => {
-            const audio = new Audio(URL.createObjectURL(audio1Input.files[0]));
-            audio.play();
+            audio1.play().catch(error => console.error("Audio play error: ", error));
         });
     }
 });
 
 audio2Input.addEventListener('change', () => {
     if (audio2Input.files.length > 0) {
+        audio2 = new Audio(URL.createObjectURL(audio2Input.files[0]));
         playAudio2Button.addEventListener('click', () => {
-            const audio = new Audio(URL.createObjectURL(audio2Input.files[0]));
-            audio.play();
+            audio2.play().catch(error => console.error("Audio play error: ", error));
         });
     }
 });
@@ -69,7 +71,7 @@ function restartTimer() {
     setTimers();
     currentInterval = 1; // Reset to first interval
     currentTimer = time1;
-    currentAudio = audio1Input.files.length > 0 ? new Audio(URL.createObjectURL(audio1Input.files[0])) : null;
+    currentAudio = audio1;
     timeDisplay.style.color = 'orange';
     displayTime(currentTimer);
     startTimer(); // Automatically start timer after restart
@@ -81,8 +83,11 @@ function setTimers() {
 }
 
 function countdown() {
+    console.log("Current Timer: ", currentTimer);
     if (currentTimer <= 1) {
-        if (currentAudio) currentAudio.play();
+        if (currentAudio) {
+            currentAudio.play().catch(error => console.error("Audio play error: ", error));
+        }
         switchInterval();
     } else {
         currentTimer--;
@@ -95,17 +100,17 @@ function switchInterval() {
         if (time2 > 0) {
             currentInterval = 2;
             currentTimer = time2;
-            currentAudio = audio2Input.files.length > 0 ? new Audio(URL.createObjectURL(audio2Input.files[0])) : null;
+            currentAudio = audio2;
             timeDisplay.style.color = 'green';
         } else {
             currentTimer = time1;
-            currentAudio = audio1Input.files.length > 0 ? new Audio(URL.createObjectURL(audio1Input.files[0])) : null;
+            currentAudio = audio1;
             timeDisplay.style.color = 'orange';
         }
     } else {
         currentInterval = 1;
         currentTimer = time1;
-        currentAudio = audio1Input.files.length > 0 ? new Audio(URL.createObjectURL(audio1Input.files[0])) : null;
+        currentAudio = audio1;
         timeDisplay.style.color = 'orange';
     }
     displayTime(currentTimer);
@@ -113,9 +118,9 @@ function switchInterval() {
 
 function getCurrentAudio() {
     if (currentInterval === 1) {
-        return audio1Input.files.length > 0 ? new Audio(URL.createObjectURL(audio1Input.files[0])) : null;
+        return audio1;
     } else {
-        return audio2Input.files.length > 0 ? new Audio(URL.createObjectURL(audio2Input.files[0])) : null;
+        return audio2;
     }
 }
 
